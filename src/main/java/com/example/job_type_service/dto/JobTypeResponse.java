@@ -1,13 +1,24 @@
 package com.example.job_type_service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
+@Schema(description = "Response object containing job type information")
 public class JobTypeResponse {
 
+    @Schema(description = "Unique identifier for the job type", example = "1")
     private Long pJobTypeId;
+    
+    @Schema(description = "Unique code for the job type", example = "FULL_TIME")
     private String code;
+    
+    @Schema(description = "Description of the job type", example = "Full-time employment position")
     private String description;
+    
+    @Schema(description = "Date and time when the job type was last updated", example = "2024-01-15T10:30:00")
     private LocalDateTime updateDate;
+    
+    @Schema(description = "User who last updated the job type", example = "admin")
     private String updateBy;
 
     // Constructors

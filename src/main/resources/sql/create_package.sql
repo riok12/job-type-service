@@ -27,4 +27,18 @@ CREATE OR REPLACE PACKAGE PACK_TEST AS
     PROCEDURE delete_job_type (
         p_id          IN  P_JOB_TYPE.P_JOB_TYPE_ID%TYPE
     );
+    
+    -- Get all job types procedure
+    PROCEDURE get_all_job_types (
+        p_cursor      OUT SYS_REFCURSOR
+    );
+    
+    -- Get job type by code procedure
+    PROCEDURE get_job_type_by_code (
+        p_code        IN  P_JOB_TYPE.CODE%TYPE,
+        p_id          OUT P_JOB_TYPE.P_JOB_TYPE_ID%TYPE,
+        p_description OUT P_JOB_TYPE.DESCRIPTION%TYPE,
+        p_update_date OUT P_JOB_TYPE.UPDATE_DATE%TYPE,
+        p_update_by   OUT P_JOB_TYPE.UPDATE_BY%TYPE
+    );
 END PACK_TEST;

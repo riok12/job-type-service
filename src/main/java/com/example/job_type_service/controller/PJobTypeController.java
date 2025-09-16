@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/job-types")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8080", "http://localhost:5173"})
 @Tag(name = "Job Type Management", description = "APIs for managing job types")
 public class PJobTypeController {
 
@@ -37,12 +37,8 @@ public class PJobTypeController {
     public ResponseEntity<JobTypeResponse> createJobType(
             @Parameter(description = "Job type information", required = true)
             @Valid @RequestBody JobTypeRequest request) {
-        try {
-            JobTypeResponse response = pJobTypeService.insertJobType(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        JobTypeResponse response = pJobTypeService.insertJobType(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Update an existing job type", description = "Updates an existing job type with the provided information")
@@ -58,12 +54,8 @@ public class PJobTypeController {
             @PathVariable Long id,
             @Parameter(description = "Updated job type information", required = true)
             @Valid @RequestBody UpdateJobTypeRequest request) {
-        try {
-            JobTypeResponse response = pJobTypeService.updateJobType(id, request);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        JobTypeResponse response = pJobTypeService.updateJobType(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Get job type by ID", description = "Retrieves a specific job type by its ID")
@@ -77,16 +69,8 @@ public class PJobTypeController {
     public ResponseEntity<JobTypeResponse> getJobType(
             @Parameter(description = "Job type ID", required = true, example = "1")
             @PathVariable Long id) {
-        try {
-            JobTypeResponse response = pJobTypeService.getJobTypeById(id);
-            if (response != null) {
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        JobTypeResponse response = pJobTypeService.getJobTypeById(id);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Delete a job type", description = "Deletes a job type by its ID")
@@ -98,12 +82,8 @@ public class PJobTypeController {
     public ResponseEntity<Void> deleteJobType(
             @Parameter(description = "Job type ID", required = true, example = "1")
             @PathVariable Long id) {
-        try {
-            pJobTypeService.deleteJobType(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        pJobTypeService.deleteJobType(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get all job types", description = "Retrieves a list of all job types")
@@ -114,12 +94,8 @@ public class PJobTypeController {
     })
     @GetMapping
     public ResponseEntity<java.util.List<JobTypeResponse>> getAllJobTypes() {
-        try {
-            java.util.List<JobTypeResponse> response = pJobTypeService.getAllJobTypes();
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        java.util.List<JobTypeResponse> response = pJobTypeService.getAllJobTypes();
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Get job type by code", description = "Retrieves a specific job type by its code")
@@ -133,15 +109,7 @@ public class PJobTypeController {
     public ResponseEntity<JobTypeResponse> getJobTypeByCode(
             @Parameter(description = "Job type code", required = true, example = "FULL_TIME")
             @PathVariable String code) {
-        try {
-            JobTypeResponse response = pJobTypeService.getJobTypeByCode(code);
-            if (response != null) {
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        JobTypeResponse response = pJobTypeService.getJobTypeByCode(code);
+        return ResponseEntity.ok(response);
     }
 }

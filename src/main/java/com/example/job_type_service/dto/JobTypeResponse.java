@@ -21,7 +21,6 @@ public class JobTypeResponse {
     @Schema(description = "User who last updated the job type", example = "admin")
     private String updateBy;
 
-    // Constructors
     public JobTypeResponse() {}
 
     public JobTypeResponse(Long pJobTypeId, String code, String description, LocalDateTime updateDate, String updateBy) {

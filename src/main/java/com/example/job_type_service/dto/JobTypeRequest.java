@@ -21,7 +21,6 @@ public class JobTypeRequest {
     @Size(max = 128, message = "Update by must not exceed 128 characters")
     private String updateBy;
 
-    // Constructors
     public JobTypeRequest() {}
 
     public JobTypeRequest(String code, String description, String updateBy) {

@@ -24,7 +24,6 @@ public class PJobTypeService {
 
     public JobTypeResponse insertJobType(JobTypeRequest request) {
         try {
-            // Get next sequence value first
             Long newId = jdbcTemplate.queryForObject("SELECT SEQ_P_JOB_TYPE.NEXTVAL FROM dual", Long.class);
             
             String sql = "{ call PACK_TEST.insert_job_type(?, ?, ?, ?) }";

@@ -35,15 +35,23 @@ public class DatabaseInitializationService {
     private void executeSqlScript(String scriptPath) throws IOException {
         ClassPathResource resource = new ClassPathResource(scriptPath);
         String sql = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
-        
-        String[] statements = sql.split(";");
-        for (String statement : statements) {
-            String trimmedStatement = statement.trim();
-            if (!trimmedStatement.isEmpty()) {
-                try {
-                    jdbcTemplate.execute(trimmedStatement);
-                } catch (Exception e) {
-                    System.out.println("Statement execution warning: " + e.getMessage());
+
+        if (scriptPath.contains("package")) {
+            try {
+                jdbcTemplate.execute(sql);
+            } catch (Exception e) {
+                System.out.println("Package execution warning: " + e.getMessage());
+            }
+        } else {
+            String[] statements = sql.split(";");
+            for (String statement : statements) {
+                String trimmedStatement = statement.trim();
+                if (!trimmedStatement.isEmpty()) {
+                    try {
+                        jdbcTemplate.execute(trimmedStatement);
+                    } catch (Exception e) {
+                        System.out.println("Statement execution warning: " + e.getMessage());
+                    }
                 }
             }
         }

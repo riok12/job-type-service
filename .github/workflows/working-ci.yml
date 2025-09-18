@@ -1,4 +1,4 @@
-name: Simple Integration Tests
+name: Working CI Pipeline
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
     - name: Test Results Summary
       if: always()
       run: |
-        echo "## 🧪 Simple Integration Test Results Summary" >> $GITHUB_STEP_SUMMARY
+        echo "## 🧪 Working CI Test Results Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### ✅ Tests Executed:" >> $GITHUB_STEP_SUMMARY
         echo "- **Non-JPA Tests**: Controller & Service tests with mocks" >> $GITHUB_STEP_SUMMARY
@@ -63,10 +63,11 @@ jobs:
         echo "- Fast execution (~2-3 minutes) ✅" >> $GITHUB_STEP_SUMMARY
         echo "- Coverage report generated ✅" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 🎯 Integration Status:" >> $GITHUB_STEP_SUMMARY
-        echo "- **Simple Integration**: Mock-based tests ✅" >> $GITHUB_STEP_SUMMARY
+        echo "### 🎯 Pipeline Status:" >> $GITHUB_STEP_SUMMARY
+        echo "- **Working CI**: Simple and reliable ✅" >> $GITHUB_STEP_SUMMARY
+        echo "- **Mock-based**: Stable unit tests ✅" >> $GITHUB_STEP_SUMMARY
+        echo "- **Fast**: Quick feedback for developers ✅" >> $GITHUB_STEP_SUMMARY
         echo "- **No Oracle Issues**: No database complexity ✅" >> $GITHUB_STEP_SUMMARY
-        echo "- **Reliable**: Stable and fast execution ✅" >> $GITHUB_STEP_SUMMARY
 
   build:
     needs: test

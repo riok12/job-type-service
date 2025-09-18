@@ -66,8 +66,14 @@ jobs:
         echo "⏳ Waiting for Oracle Database to be ready..."
         export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH
         export PATH=/opt/oracle/instantclient_21_12:$PATH
-        timeout 300 bash -c 'until sqlplus -L system/oracle@localhost:1521/xe @/dev/null; do sleep 5; done'
-        echo "✅ Oracle Database is ready!"
+        for i in {1..60}; do
+          if sqlplus -L system/oracle@localhost:1521/xe @/dev/null; then
+            echo "✅ Oracle Database is ready!"
+            break
+          fi
+          echo "Waiting... attempt $i/60"
+          sleep 5
+        done
 
     - name: Setup Database Schema
       run: |

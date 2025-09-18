@@ -75,3 +75,4 @@ class DatabaseInitializationServiceTest {
         assertDoesNotThrow(() -> databaseInitializationService.initializeDatabase());
     }
 }
+

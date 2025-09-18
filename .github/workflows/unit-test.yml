@@ -47,15 +47,6 @@ jobs:
         echo "📊 Generating coverage report..."
         ./mvnw jacoco:report
 
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results-${{ github.run_number }}
-        path: |
-          target/surefire-reports/
-          target/site/jacoco/
-
     - name: Test Results Summary
       if: always()
       run: |
@@ -72,6 +63,7 @@ jobs:
         echo "- Fast execution (~2-3 minutes) ✅" >> $GITHUB_STEP_SUMMARY
         echo "- Coverage report generated ✅" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 📊 Artifacts:" >> $GITHUB_STEP_SUMMARY
-        echo "- Test reports: \`target/surefire-reports/\`" >> $GITHUB_STEP_SUMMARY
-        echo "- Coverage report: \`target/site/jacoco/\`" >> $GITHUB_STEP_SUMMARY
+        echo "### 🎯 Pipeline Status:" >> $GITHUB_STEP_SUMMARY
+        echo "- **Unit Tests**: Simple and reliable ✅" >> $GITHUB_STEP_SUMMARY
+        echo "- **Mock-based**: Stable unit tests ✅" >> $GITHUB_STEP_SUMMARY
+        echo "- **Fast**: Quick feedback for developers ✅" >> $GITHUB_STEP_SUMMARY

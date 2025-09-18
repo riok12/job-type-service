@@ -50,25 +50,19 @@ jobs:
         unzip instantclient-basic-linux.x64-21.12.0.0.0dbru.zip
         sudo mkdir -p /opt/oracle
         sudo mv instantclient_21_12 /opt/oracle/
-        echo 'export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH' >> ~/.bashrc
-        echo 'export PATH=/opt/oracle/instantclient_21_12:$PATH' >> ~/.bashrc
-        export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH
-        export PATH=/opt/oracle/instantclient_21_12:$PATH
+        echo "LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "PATH=/opt/oracle/instantclient_21_12:$PATH" >> $GITHUB_ENV
         echo "✅ Oracle Instant Client installed!"
 
     - name: Wait for Oracle Database
       run: |
         echo "⏳ Waiting for Oracle Database to be ready..."
-        export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH
-        export PATH=/opt/oracle/instantclient_21_12:$PATH
         timeout 300 bash -c 'until sqlplus -L system/oracle@localhost:1521/xe @/dev/null; do sleep 5; done'
         echo "✅ Oracle Database is ready!"
 
     - name: Setup Database Schema
       run: |
         echo "🗄️ Setting up database schema..."
-        export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_12:$LD_LIBRARY_PATH
-        export PATH=/opt/oracle/instantclient_21_12:$PATH
         sqlplus system/oracle@localhost:1521/xe @src/main/resources/sql/create_table.sql
         sqlplus system/oracle@localhost:1521/xe @src/main/resources/sql/create_package.sql
         sqlplus system/oracle@localhost:1521/xe @src/main/resources/sql/create_package_body.sql

@@ -14,9 +14,11 @@ public interface PJobTypeRepository extends JpaRepository<PJobType, Long> {
     
 
     Optional<PJobType> findByCode(String code);
-    boolean existsByCode(String code);
+    
+    @Query("SELECT COUNT(j) > 0 FROM PJobType j WHERE j.code = :code")
+    boolean existsByCode(@Param("code") String code);
 
-    @Query("SELECT j FROM PJobType j WHERE LOWER(j.description) LIKE LOWER(CONCAT('%', :description, '%'))")
+    @Query("SELECT j FROM PJobType j WHERE LOWER(j.description) LIKE LOWER('%' || :description || '%')")
     List<PJobType> findByDescriptionContainingIgnoreCase(@Param("description") String description);
 
     List<PJobType> findByUpdateBy(String updateBy);

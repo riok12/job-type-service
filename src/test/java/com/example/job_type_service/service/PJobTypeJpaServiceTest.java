@@ -56,16 +56,11 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void insertJobType_Success() {
-        // Given
         Long newId = 1L;
         when(jobTypeRepository.existsByCode(testJobTypeRequest.getCode())).thenReturn(false);
-        when(jdbcTemplate.queryForObject("SELECT SEQ_P_JOB_TYPE.NEXTVAL FROM dual", Long.class)).thenReturn(newId);
         when(jobTypeRepository.save(any(PJobType.class))).thenReturn(testJobType);
-
-        // When
         JobTypeResponse result = jobTypeJpaService.insertJobType(testJobTypeRequest);
 
-        // Then
         assertNotNull(result);
         assertEquals(1L, result.getPJobTypeId());
         assertEquals("FULL_TIME", result.getCode());
@@ -79,16 +74,12 @@ class PJobTypeJpaServiceTest {
         System.out.println("=====================================");
         
         verify(jobTypeRepository).existsByCode(testJobTypeRequest.getCode());
-        verify(jdbcTemplate).queryForObject("SELECT SEQ_P_JOB_TYPE.NEXTVAL FROM dual", Long.class);
         verify(jobTypeRepository).save(any(PJobType.class));
     }
 
     @Test
     void insertJobType_CodeAlreadyExists_ThrowsException() {
-        // Given
         when(jobTypeRepository.existsByCode(testJobTypeRequest.getCode())).thenReturn(true);
-
-        // When & Then
         JobTypeServiceException exception = assertThrows(JobTypeServiceException.class,
                 () -> jobTypeJpaService.insertJobType(testJobTypeRequest));
 
@@ -106,16 +97,13 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void updateJobType_Success() {
-        // Given
         Long id = 1L;
         when(jobTypeRepository.findById(id)).thenReturn(Optional.of(testJobType));
         when(jobTypeRepository.existsByCode(testUpdateRequest.getCode())).thenReturn(false);
         when(jobTypeRepository.save(any(PJobType.class))).thenReturn(testJobType);
 
-        // When
         JobTypeResponse result = jobTypeJpaService.updateJobType(id, testUpdateRequest);
 
-        // Then
         assertNotNull(result);
         assertEquals(id, result.getPJobTypeId());
         assertEquals("PART_TIME", result.getCode());
@@ -135,11 +123,8 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void updateJobType_NotFound_ThrowsException() {
-        // Given
         Long id = 999L;
         when(jobTypeRepository.findById(id)).thenReturn(Optional.empty());
-
-        // When & Then
         JobTypeNotFoundException exception = assertThrows(JobTypeNotFoundException.class,
                 () -> jobTypeJpaService.updateJobType(id, testUpdateRequest));
 
@@ -161,11 +146,8 @@ class PJobTypeJpaServiceTest {
         // Given
         Long id = 1L;
         when(jobTypeRepository.findById(id)).thenReturn(Optional.of(testJobType));
-
-        // When
         JobTypeResponse result = jobTypeJpaService.getJobTypeById(id);
 
-        // Then
         assertNotNull(result);
         assertEquals(id, result.getPJobTypeId());
         assertEquals("FULL_TIME", result.getCode());
@@ -182,11 +164,9 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypeById_NotFound_ThrowsException() {
-        // Given
         Long id = 999L;
         when(jobTypeRepository.findById(id)).thenReturn(Optional.empty());
 
-        // When & Then
         JobTypeNotFoundException exception = assertThrows(JobTypeNotFoundException.class,
                 () -> jobTypeJpaService.getJobTypeById(id));
 
@@ -203,14 +183,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypeByCode_Success() {
-        // Given
         String code = "FULL_TIME";
         when(jobTypeRepository.findByCode(code)).thenReturn(Optional.of(testJobType));
-
-        // When
         JobTypeResponse result = jobTypeJpaService.getJobTypeByCode(code);
 
-        // Then
         assertNotNull(result);
         assertEquals(1L, result.getPJobTypeId());
         assertEquals(code, result.getCode());
@@ -227,11 +203,9 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypeByCode_NotFound_ThrowsException() {
-        // Given
         String code = "INVALID_CODE";
         when(jobTypeRepository.findByCode(code)).thenReturn(Optional.empty());
 
-        // When & Then
         JobTypeNotFoundException exception = assertThrows(JobTypeNotFoundException.class,
                 () -> jobTypeJpaService.getJobTypeByCode(code));
 
@@ -248,14 +222,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void deleteJobType_Success() {
-        // Given
         Long id = 1L;
         when(jobTypeRepository.existsById(id)).thenReturn(true);
 
-        // When
         assertDoesNotThrow(() -> jobTypeJpaService.deleteJobType(id));
-
-        // Then
         System.out.println("=== DELETE JOB TYPE SUCCESS (JPA) ===");
         System.out.println("ID: " + id);
         System.out.println("Status: Successfully deleted");
@@ -267,11 +237,8 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void deleteJobType_NotFound_ThrowsException() {
-        // Given
         Long id = 999L;
         when(jobTypeRepository.existsById(id)).thenReturn(false);
-
-        // When & Then
         JobTypeNotFoundException exception = assertThrows(JobTypeNotFoundException.class,
                 () -> jobTypeJpaService.deleteJobType(id));
 
@@ -289,14 +256,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void deleteJobTypeByCode_Success() {
-        // Given
         String code = "FULL_TIME";
         when(jobTypeRepository.existsByCode(code)).thenReturn(true);
-
-        // When
         assertDoesNotThrow(() -> jobTypeJpaService.deleteJobTypeByCode(code));
 
-        // Then
         System.out.println("=== DELETE JOB TYPE BY CODE SUCCESS (JPA) ===");
         System.out.println("Code: " + code);
         System.out.println("Status: Successfully deleted");
@@ -308,11 +271,8 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void deleteJobTypeByCode_NotFound_ThrowsException() {
-        // Given
         String code = "INVALID_CODE";
         when(jobTypeRepository.existsByCode(code)).thenReturn(false);
-
-        // When & Then
         JobTypeNotFoundException exception = assertThrows(JobTypeNotFoundException.class,
                 () -> jobTypeJpaService.deleteJobTypeByCode(code));
 
@@ -330,14 +290,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getAllJobTypes_Success() {
-        // Given
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findAll()).thenReturn(jobTypes);
-
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getAllJobTypes();
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(1L, result.get(0).getPJobTypeId());
@@ -353,14 +309,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getAllJobTypesOrderByUpdateDateDesc_Success() {
-        // Given
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findAllOrderByUpdateDateDesc()).thenReturn(jobTypes);
-
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getAllJobTypesOrderByUpdateDateDesc();
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -375,14 +327,11 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getAllJobTypesOrderByCodeAsc_Success() {
-        // Given
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findAllOrderByCodeAsc()).thenReturn(jobTypes);
 
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getAllJobTypesOrderByCodeAsc();
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -397,15 +346,12 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void searchJobTypesByDescription_Success() {
-        // Given
         String description = "employment";
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findByDescriptionContainingIgnoreCase(description)).thenReturn(jobTypes);
 
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.searchJobTypesByDescription(description);
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -421,15 +367,11 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypesByUpdateBy_Success() {
-        // Given
         String updateBy = "admin";
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findByUpdateBy(updateBy)).thenReturn(jobTypes);
-
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getJobTypesByUpdateBy(updateBy);
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -446,15 +388,11 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypesUpdatedAfter_Success() {
-        // Given
         LocalDateTime updateDate = LocalDateTime.now().minusDays(1);
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findByUpdateDateAfter(updateDate)).thenReturn(jobTypes);
-
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getJobTypesUpdatedAfter(updateDate);
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -470,16 +408,13 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getJobTypesUpdatedBetween_Success() {
-        // Given
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
         LocalDateTime endDate = LocalDateTime.now();
         List<PJobType> jobTypes = Arrays.asList(testJobType);
         when(jobTypeRepository.findByUpdateDateBetween(startDate, endDate)).thenReturn(jobTypes);
 
-        // When
         List<JobTypeResponse> result = jobTypeJpaService.getJobTypesUpdatedBetween(startDate, endDate);
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("FULL_TIME", result.get(0).getCode());
@@ -496,14 +431,9 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void existsById_Success() {
-        // Given
         Long id = 1L;
         when(jobTypeRepository.existsById(id)).thenReturn(true);
-
-        // When
         boolean exists = jobTypeJpaService.existsById(id);
-
-        // Then
         assertTrue(exists);
         
         System.out.println("=== EXISTS BY ID SUCCESS (JPA) ===");
@@ -516,14 +446,10 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void existsByCode_Success() {
-        // Given
         String code = "FULL_TIME";
         when(jobTypeRepository.existsByCode(code)).thenReturn(true);
-
-        // When
         boolean exists = jobTypeJpaService.existsByCode(code);
 
-        // Then
         assertTrue(exists);
         
         System.out.println("=== EXISTS BY CODE SUCCESS (JPA) ===");
@@ -536,14 +462,11 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void countByUpdateBy_Success() {
-        // Given
         String updateBy = "admin";
         when(jobTypeRepository.countByUpdateBy(updateBy)).thenReturn(3L);
 
-        // When
         long count = jobTypeJpaService.countByUpdateBy(updateBy);
 
-        // Then
         assertEquals(3L, count);
         
         System.out.println("=== COUNT BY UPDATE BY SUCCESS (JPA) ===");
@@ -556,13 +479,9 @@ class PJobTypeJpaServiceTest {
 
     @Test
     void getTotalCount_Success() {
-        // Given
         when(jobTypeRepository.count()).thenReturn(5L);
-
-        // When
         long count = jobTypeJpaService.getTotalCount();
 
-        // Then
         assertEquals(5L, count);
         
         System.out.println("=== GET TOTAL COUNT SUCCESS (JPA) ===");

@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://0fbc5627ec15.ngrok-free.app/",
+					"raw": "https://6b4db8f89a02.ngrok-free.app/",
 					"protocol": "https",
 					"host": [
 						"0fbc5627ec15",
@@ -33,7 +33,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://0fbc5627ec15.ngrok-free.app/api/health",
+					"raw": "https://6b4db8f89a02.ngrok-free.app/api/health",
 					"protocol": "https",
 					"host": [
 						"0fbc5627ec15",
@@ -55,7 +55,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://0fbc5627ec15.ngrok-free.app/api/database/info",
+					"raw": "https://6b4db8f89a02.ngrok-free.app/api/database/info",
 					"protocol": "https",
 					"host": [
 						"0fbc5627ec15",
@@ -81,7 +81,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -103,7 +103,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types/5",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types/5",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -126,7 +126,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types/code/TEST_JOB",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types/code/TEST_JOB",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -159,7 +159,7 @@
 							"raw": "{\n  \"code\": \"NEW_JOB_TYPE\",\n  \"description\": \"Description for new job type\",\n  \"updateBy\": \"postman_user\"\n}"
 						},
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -190,7 +190,7 @@
 							"raw": "{\n  \"code\": \"UPDATED_CODE\",\n  \"description\": \"Updated description\",\n  \"updateBy\": \"postman_user\"\n}"
 						},
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types/5",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types/5",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -213,7 +213,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api/job-types/5",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api/job-types/5",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -241,7 +241,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/swagger-ui.html",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/swagger-ui.html",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -262,7 +262,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://0fbc5627ec15.ngrok-free.app/api-docs",
+							"raw": "https://6b4db8f89a02.ngrok-free.app/api-docs",
 							"protocol": "https",
 							"host": [
 								"0fbc5627ec15",
@@ -283,7 +283,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "https://0fbc5627ec15.ngrok-free.app",
+			"value": "https://6b4db8f89a02.ngrok-free.app",
 			"description": "Base URL for all API requests"
 		}
 	]

@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 public class PJobType {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_P_JOB_TYPE")
+    @SequenceGenerator(name = "SEQ_P_JOB_TYPE", sequenceName = "SEQ_P_JOB_TYPE", allocationSize = 1)
     @Column(name = "P_JOB_TYPE_ID")
     private Long pJobTypeId;
 

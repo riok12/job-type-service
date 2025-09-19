@@ -7,26 +7,21 @@ import com.example.job_type_service.entity.PJobType;
 import com.example.job_type_service.exception.JobTypeNotFoundException;
 import com.example.job_type_service.exception.JobTypeServiceException;
 import com.example.job_type_service.repository.PJobTypeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class PJobTypeJpaService {
 
     private final PJobTypeRepository jobTypeRepository;
-    private final JdbcTemplate jdbcTemplate;
 
-    public PJobTypeJpaService(PJobTypeRepository jobTypeRepository, JdbcTemplate jdbcTemplate) {
+    public PJobTypeJpaService(PJobTypeRepository jobTypeRepository) {
         this.jobTypeRepository = jobTypeRepository;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     public JobTypeResponse insertJobType(JobTypeRequest request) {
@@ -35,10 +30,7 @@ public class PJobTypeJpaService {
                 throw new JobTypeServiceException("Job type with code '" + request.getCode() + "' already exists");
             }
 
-            Long newId = jdbcTemplate.queryForObject("SELECT SEQ_P_JOB_TYPE.NEXTVAL FROM dual", Long.class);
-
             PJobType jobType = new PJobType();
-            jobType.setPJobTypeId(newId);
             jobType.setCode(request.getCode());
             jobType.setDescription(request.getDescription());
             jobType.setUpdateDate(LocalDateTime.now());

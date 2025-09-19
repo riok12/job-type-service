@@ -1,5 +1,9 @@
 package com.example.job_type_service.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +16,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/database")
+@Tag(name = "Database Information", description = "Database information and status endpoints")
 public class DatabaseController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/info")
+    @Operation(summary = "Get database information", description = "Retrieves information about the database including version, table existence, and record counts")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Database information retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Database connection or query error")
+    })
     public Map<String, Object> getDatabaseInfo() {
         Map<String, Object> info = new HashMap<>();
         

@@ -49,7 +49,7 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void createJobType_Success() throws Exception {
-        // Given
+
         JobTypeRequest request = new JobTypeRequest("FULL_TIME", "Full-time employment", "admin");
         JobTypeResponse response = JobTypeResponse.builder()
                 .pJobTypeId(1L)
@@ -60,8 +60,6 @@ class PJobTypeJpaControllerTest {
                 .build();
 
         doReturn(response).when(pJobTypeJpaService).insertJobType(any(JobTypeRequest.class));
-
-        // When & Then
         mockMvc.perform(post("/api/v2/job-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -76,12 +74,10 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void createJobType_CodeAlreadyExists_ReturnsBadRequest() throws Exception {
-        // Given
         JobTypeRequest request = new JobTypeRequest("FULL_TIME", "Full-time employment", "admin");
         doThrow(new JobTypeServiceException("Job type with code 'FULL_TIME' already exists"))
                 .when(pJobTypeJpaService).insertJobType(any(JobTypeRequest.class));
 
-        // When & Then
         mockMvc.perform(post("/api/v2/job-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -92,7 +88,6 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void updateJobType_Success() throws Exception {
-        // Given
         Long id = 1L;
         UpdateJobTypeRequest request = new UpdateJobTypeRequest("PART_TIME", "Part-time employment", "admin");
         JobTypeResponse response = JobTypeResponse.builder()
@@ -104,8 +99,6 @@ class PJobTypeJpaControllerTest {
                 .build();
 
         when(pJobTypeJpaService.updateJobType(eq(id), any(UpdateJobTypeRequest.class))).thenReturn(response);
-
-        // When & Then
         mockMvc.perform(put("/api/v2/job-types/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -120,13 +113,11 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void updateJobType_NotFound_ReturnsNotFound() throws Exception {
-        // Given
         Long id = 999L;
         UpdateJobTypeRequest request = new UpdateJobTypeRequest("PART_TIME", "Part-time employment", "admin");
         when(pJobTypeJpaService.updateJobType(eq(id), any(UpdateJobTypeRequest.class)))
                 .thenThrow(new JobTypeNotFoundException("Job type with ID 999 not found"));
 
-        // When & Then
         mockMvc.perform(put("/api/v2/job-types/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -137,7 +128,6 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void getJobTypeById_Success() throws Exception {
-        // Given
         Long id = 1L;
         JobTypeResponse response = JobTypeResponse.builder()
                 .pJobTypeId(id)
@@ -148,8 +138,6 @@ class PJobTypeJpaControllerTest {
                 .build();
 
         when(pJobTypeJpaService.getJobTypeById(id)).thenReturn(response);
-
-        // When & Then
         mockMvc.perform(get("/api/v2/job-types/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pjobTypeId").value(id))
@@ -162,12 +150,10 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void getJobTypeById_NotFound_ReturnsNotFound() throws Exception {
-        // Given
         Long id = 999L;
         when(pJobTypeJpaService.getJobTypeById(id))
                 .thenThrow(new JobTypeNotFoundException("Job type with ID 999 not found"));
 
-        // When & Then
         mockMvc.perform(get("/api/v2/job-types/{id}", id))
                 .andExpect(status().isNotFound());
 
@@ -176,7 +162,6 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void getJobTypeByCode_Success() throws Exception {
-        // Given
         String code = "FULL_TIME";
         JobTypeResponse response = JobTypeResponse.builder()
                 .pJobTypeId(1L)
@@ -187,8 +172,6 @@ class PJobTypeJpaControllerTest {
                 .build();
 
         when(pJobTypeJpaService.getJobTypeByCode(code)).thenReturn(response);
-
-        // When & Then
         mockMvc.perform(get("/api/v2/job-types/code/{code}", code))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pjobTypeId").value(1L))
@@ -201,12 +184,10 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void getJobTypeByCode_NotFound_ReturnsNotFound() throws Exception {
-        // Given
         String code = "INVALID_CODE";
         when(pJobTypeJpaService.getJobTypeByCode(code))
                 .thenThrow(new JobTypeNotFoundException("Job type with code 'INVALID_CODE' not found"));
 
-        // When & Then
         mockMvc.perform(get("/api/v2/job-types/code/{code}", code))
                 .andExpect(status().isNotFound());
 
@@ -215,11 +196,8 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void deleteJobType_Success() throws Exception {
-        // Given
         Long id = 1L;
         doNothing().when(pJobTypeJpaService).deleteJobType(id);
-
-        // When & Then
         mockMvc.perform(delete("/api/v2/job-types/{id}", id))
                 .andExpect(status().isNoContent());
 
@@ -228,12 +206,9 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void deleteJobType_NotFound_ReturnsNotFound() throws Exception {
-        // Given
         Long id = 999L;
         doThrow(new JobTypeNotFoundException("Job type with ID 999 not found"))
                 .when(pJobTypeJpaService).deleteJobType(id);
-
-        // When & Then
         mockMvc.perform(delete("/api/v2/job-types/{id}", id))
                 .andExpect(status().isNotFound());
 
@@ -242,11 +217,8 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void deleteJobTypeByCode_Success() throws Exception {
-        // Given
         String code = "FULL_TIME";
         doNothing().when(pJobTypeJpaService).deleteJobTypeByCode(code);
-
-        // When & Then
         mockMvc.perform(delete("/api/v2/job-types/code/{code}", code))
                 .andExpect(status().isNoContent());
 
@@ -255,12 +227,9 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void deleteJobTypeByCode_NotFound_ReturnsNotFound() throws Exception {
-        // Given
         String code = "INVALID_CODE";
         doThrow(new JobTypeNotFoundException("Job type with code 'INVALID_CODE' not found"))
                 .when(pJobTypeJpaService).deleteJobTypeByCode(code);
-
-        // When & Then
         mockMvc.perform(delete("/api/v2/job-types/code/{code}", code))
                 .andExpect(status().isNotFound());
 
@@ -269,7 +238,6 @@ class PJobTypeJpaControllerTest {
 
     @Test
     void getAllJobTypes_Success() throws Exception {
-        // Given
         List<JobTypeResponse> responses = Arrays.asList(
                 JobTypeResponse.builder()
                         .pJobTypeId(1L)
@@ -288,8 +256,6 @@ class PJobTypeJpaControllerTest {
         );
 
         when(pJobTypeJpaService.getAllJobTypes()).thenReturn(responses);
-
-        // When & Then
         mockMvc.perform(get("/api/v2/job-types"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -302,237 +268,5 @@ class PJobTypeJpaControllerTest {
         verify(pJobTypeJpaService).getAllJobTypes();
     }
 
-    @Test
-    void getAllJobTypesOrderByUpdateDateDesc_Success() throws Exception {
-        // Given
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(2L)
-                        .code("PART_TIME")
-                        .description("Part-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build(),
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now().minusDays(1))
-                        .updateBy("admin")
-                        .build()
-        );
 
-        when(pJobTypeJpaService.getAllJobTypesOrderByUpdateDateDesc()).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/ordered/update-date-desc"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].code").value("PART_TIME"))
-                .andExpect(jsonPath("$[1].code").value("FULL_TIME"));
-
-        verify(pJobTypeJpaService).getAllJobTypesOrderByUpdateDateDesc();
-    }
-
-    @Test
-    void getAllJobTypesOrderByCodeAsc_Success() throws Exception {
-        // Given
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build(),
-                JobTypeResponse.builder()
-                        .pJobTypeId(2L)
-                        .code("PART_TIME")
-                        .description("Part-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build()
-        );
-
-        when(pJobTypeJpaService.getAllJobTypesOrderByCodeAsc()).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/ordered/code-asc"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].code").value("FULL_TIME"))
-                .andExpect(jsonPath("$[1].code").value("PART_TIME"));
-
-        verify(pJobTypeJpaService).getAllJobTypesOrderByCodeAsc();
-    }
-
-    @Test
-    void searchJobTypesByDescription_Success() throws Exception {
-        // Given
-        String description = "employment";
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build()
-        );
-
-        when(pJobTypeJpaService.searchJobTypesByDescription(description)).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/search/description")
-                        .param("description", description))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].code").value("FULL_TIME"))
-                .andExpect(jsonPath("$[0].description").value("Full-time employment"));
-
-        verify(pJobTypeJpaService).searchJobTypesByDescription(description);
-    }
-
-    @Test
-    void getJobTypesByUpdateBy_Success() throws Exception {
-        // Given
-        String updateBy = "admin";
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy(updateBy)
-                        .build()
-        );
-
-        when(pJobTypeJpaService.getJobTypesByUpdateBy(updateBy)).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/filter/update-by")
-                        .param("updateBy", updateBy))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].code").value("FULL_TIME"))
-                .andExpect(jsonPath("$[0].updateBy").value(updateBy));
-
-        verify(pJobTypeJpaService).getJobTypesByUpdateBy(updateBy);
-    }
-
-    @Test
-    void getJobTypesUpdatedAfter_Success() throws Exception {
-        // Given
-        LocalDateTime updateDate = LocalDateTime.now().minusDays(1);
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build()
-        );
-
-        when(pJobTypeJpaService.getJobTypesUpdatedAfter(updateDate)).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/filter/updated-after")
-                        .param("updateDate", updateDate.toString()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].code").value("FULL_TIME"));
-
-        verify(pJobTypeJpaService).getJobTypesUpdatedAfter(updateDate);
-    }
-
-    @Test
-    void getJobTypesUpdatedBetween_Success() throws Exception {
-        // Given
-        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
-        LocalDateTime endDate = LocalDateTime.now();
-        List<JobTypeResponse> responses = Arrays.asList(
-                JobTypeResponse.builder()
-                        .pJobTypeId(1L)
-                        .code("FULL_TIME")
-                        .description("Full-time employment")
-                        .updateDate(LocalDateTime.now())
-                        .updateBy("admin")
-                        .build()
-        );
-
-        when(pJobTypeJpaService.getJobTypesUpdatedBetween(startDate, endDate)).thenReturn(responses);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/filter/updated-between")
-                        .param("startDate", startDate.toString())
-                        .param("endDate", endDate.toString()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].code").value("FULL_TIME"));
-
-        verify(pJobTypeJpaService).getJobTypesUpdatedBetween(startDate, endDate);
-    }
-
-    @Test
-    void existsById_Success() throws Exception {
-        // Given
-        Long id = 1L;
-        when(pJobTypeJpaService.existsById(id)).thenReturn(true);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/exists/{id}", id))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-
-        verify(pJobTypeJpaService).existsById(id);
-    }
-
-    @Test
-    void existsByCode_Success() throws Exception {
-        // Given
-        String code = "FULL_TIME";
-        when(pJobTypeJpaService.existsByCode(code)).thenReturn(true);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/exists/code/{code}", code))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-
-        verify(pJobTypeJpaService).existsByCode(code);
-    }
-
-    @Test
-    void getTotalCount_Success() throws Exception {
-        // Given
-        when(pJobTypeJpaService.getTotalCount()).thenReturn(5L);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/count"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("5"));
-
-        verify(pJobTypeJpaService).getTotalCount();
-    }
-
-    @Test
-    void countByUpdateBy_Success() throws Exception {
-        // Given
-        String updateBy = "admin";
-        when(pJobTypeJpaService.countByUpdateBy(updateBy)).thenReturn(3L);
-
-        // When & Then
-        mockMvc.perform(get("/api/v2/job-types/count/update-by")
-                        .param("updateBy", updateBy))
-                .andExpect(status().isOk())
-                .andExpect(content().string("3"));
-
-        verify(pJobTypeJpaService).countByUpdateBy(updateBy);
-    }
 }

@@ -3,6 +3,7 @@ package com.example.job_type_service.repository;
 import com.example.job_type_service.entity.PJobType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface PJobTypeRepository extends JpaRepository<PJobType, Long> {
-    
 
-    Optional<PJobType> findByCode(String code);
-    
+    @Procedure(name = "update_job_type")
     @Query("SELECT COUNT(j) > 0 FROM PJobType j WHERE j.code = :code")
     boolean existsByCode(@Param("code") String code);
 
@@ -31,6 +30,8 @@ public interface PJobTypeRepository extends JpaRepository<PJobType, Long> {
 
     @Query("SELECT j FROM PJobType j ORDER BY j.code ASC")
     List<PJobType> findAllOrderByCodeAsc();
+
+    Optional<PJobType> findByCode(String code);
 
     long countByUpdateBy(String updateBy);
     void deleteByCode(String code);
